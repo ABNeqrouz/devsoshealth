@@ -5,8 +5,14 @@ import Patients from '@/components/patient/Patients'
 import NouveauPatient from '@/components/patient/NouveauPatient'
 import Patient from '@/components/patient/Patient'
 import RendezVous from '@/components/patient/RendezVous'
+import ListVisits from '@/components/patient/ListVisits'
+import Profile from '@/components/User/Profile'
+import Signup from '@/components/User/Signup'
+import Signin from '@/components/User/Signin'
+import AuthGuard from './auth-guard'
 
-Vue.use(Router)
+
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -29,13 +35,36 @@ export default new Router({
       {
        path: '/nouveauPatient',
           name: 'newPatient',
-          component: NouveauPatient
+          component: NouveauPatient,
+          beforeEnter: AuthGuard
       },
       {
-        path: '/rendezvous/:patientId',
-          name: 'RendezVous',
+        path: '/patients/newvisit/:patientId',
+          name: 'Visit',
           props: true,
           component: RendezVous
+      },
+      {
+        path: '/patients/visits/:patientId',
+          name: 'Visits',
+          props: true,
+          component: ListVisits
+      },
+      {
+          path: '/profile',
+          name: 'Profile',
+          component: Profile,
+          beforeEnter: AuthGuard
+      },
+      {
+          path: '/signup',
+          name: 'Signup',
+          component: Signup
+      },
+      {
+          path: '/signin',
+          name: 'Signin',
+          component: Signin
       }
 
   ],

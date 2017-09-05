@@ -18,9 +18,9 @@
         >
             <template slot="items" scope="props">
                 <td  @click="onLoadPatient(props.item._id)" style="cursor: pointer;">{{ props.item.Nom }}</td>
-                <td>{{ props.item.Prenom }}</td>
-                <td>{{ props.item.Sexe.toString() }}</td>
-                <td>{{ props.item.Telephone }}</td>
+                <td @click="onLoadPatient(props.item._id)" style="cursor: pointer;">{{ props.item.Prenom }}</td>
+                <td @click="onLoadPatient(props.item._id)" style="cursor: pointer;">{{ props.item.Sexe.toString() }}</td>
+                <td @click="onLoadPatient(props.item._id)" style="cursor: pointer;">{{ props.item.Telephone }}</td>
             </template>
             <template slot="pageText" scope="{ pageStart, pageStop }">
                 De {{ pageStart }} à {{ pageStop }}

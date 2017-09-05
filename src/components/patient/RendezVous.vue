@@ -1,18 +1,21 @@
 <template>
-    <v-container fluid>
-        <br>
-        <v-layout>
-            <v-flex xs12 sm6 offset-sm2>
-                <h4 style="color: #66bb6a">Créez un rendez-vous</h4>
-                <hr>
-                <br>
-                <div>
-                    <a style="color: #29b6f6" href="#">{{ patient.Nom }} {{patient.Prenom }}</a>
-                </div>
-            </v-flex>
-        </v-layout>
-        <br><br>
+    <v-card>
+        <v-card-title>
+            <b style="color: black">Créez un rendez-vous</b>
+            <v-spacer></v-spacer>
+            <a style="color: #29b6f6" href="#">{{ patient.Nom }} {{patient.Prenom }}</a>
+        </v-card-title>
         <v-layout row wrap>
+            <v-flex xs12 sm3 offset-sm3>
+                <v-select
+                        v-bind:items="types"
+                        v-model="type"
+                        label="Type"
+                        autocomplete
+                        prepend-icon="assignment"
+                >
+                </v-select>
+            </v-flex>
             <v-flex xs12 sm6 offset-sm3>
                 <v-menu
                         lazy
@@ -60,28 +63,18 @@
                 </v-menu>
             </v-flex>
             <v-flex xs12 sm3 offset-sm3>
-                <v-select
-                v-bind:items="types"
-                v-model="type"
-                label="Type"
-                autocomplete
-                prepend-icon="map"
-                >
-                </v-select>
-            </v-flex>
-            <v-flex xs12 sm4 offset-sm3>
                 <v-text-field
-                v-model="observDiag"
-                label="Observation diagnostic"
-                multiLine
+                        v-model="medecin"
+                        label="Medecin"
+                        prepend-icon="assignment_ind"
                 >
                 </v-text-field>
             </v-flex>
             <v-flex xs12 sm4 offset-sm8>
-                <v-btn class="info" @click="put">Confirmer</v-btn>
+                <v-btn class="info" @click="post">Confirmer</v-btn>
             </v-flex>
         </v-layout>
-    </v-container>
+    </v-card>
 </template>
 <script>
     export default{
@@ -91,20 +84,24 @@
                 timeVisit:null,
                 menu: false,
                 menu2: false,
-                types:['asthenie', 'reflux gastro-oesophagien'],
+                types:['Consultation'],
                 type: '',
-                observDiag: '',
+                medecin: '',
                 patient: {}
             }
         },
         props: ['patientId'],
         methods :{
-            put () {
-                this.$http.put('http://localhost:8002/getIndividus/' + patientId, {
-                    Type: this.Type,
+            post () {
+                this.$http.post('http://localhost:8002/postIndividuVisit/' + this.patientId, {
+                    Type: this.type,
                     dateVisit: this.dateVisit,
-                    observDiag: this.observDiag
-                })
+                    timeVisit: this.timeVisit,
+                    medecin: this.medecin
+                }).then(function (data) {
+                    console.log(data);
+                });
+                this.$router.push('/patients/visits/' + this.patientId)
             }
         },
         created() {
